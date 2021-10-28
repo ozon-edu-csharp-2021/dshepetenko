@@ -18,6 +18,12 @@ ProjectSection(SolutionItems) = preProject
 	deploy\docker-compose.yml = deploy\docker-compose.yml
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService.HttpClient", "src\MerchandiseService.HttpClient\MerchandiseService.HttpClient.csproj", "{C272CA51-A444-41A6-8911-A074673D5AEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService.Grpc", "src\MerchandiseService.Grpc\MerchandiseService.Grpc.csproj", "{11DE8224-190D-47DA-8BD8-079666D32677}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService.HttpModels", "src\MerchandiseService.HttpModels\MerchandiseService.HttpModels.csproj", "{03631372-2623-410A-B70D-FAED83935D31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,11 +31,26 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{76182576-986F-4246-AB2E-D2185D0FB618} = {1B172970-A7AC-405B-BDBE-49B0C0450156}
+		{C272CA51-A444-41A6-8911-A074673D5AEB} = {1B172970-A7AC-405B-BDBE-49B0C0450156}
+		{11DE8224-190D-47DA-8BD8-079666D32677} = {1B172970-A7AC-405B-BDBE-49B0C0450156}
+		{03631372-2623-410A-B70D-FAED83935D31} = {1B172970-A7AC-405B-BDBE-49B0C0450156}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{76182576-986F-4246-AB2E-D2185D0FB618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{76182576-986F-4246-AB2E-D2185D0FB618}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76182576-986F-4246-AB2E-D2185D0FB618}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76182576-986F-4246-AB2E-D2185D0FB618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C272CA51-A444-41A6-8911-A074673D5AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C272CA51-A444-41A6-8911-A074673D5AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C272CA51-A444-41A6-8911-A074673D5AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C272CA51-A444-41A6-8911-A074673D5AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11DE8224-190D-47DA-8BD8-079666D32677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11DE8224-190D-47DA-8BD8-079666D32677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11DE8224-190D-47DA-8BD8-079666D32677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11DE8224-190D-47DA-8BD8-079666D32677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03631372-2623-410A-B70D-FAED83935D31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03631372-2623-410A-B70D-FAED83935D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03631372-2623-410A-B70D-FAED83935D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03631372-2623-410A-B70D-FAED83935D31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
