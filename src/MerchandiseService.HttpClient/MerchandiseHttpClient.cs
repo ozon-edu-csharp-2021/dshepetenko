@@ -9,8 +9,8 @@ namespace MerchandiseService.HttpClient
 {
     public interface IMerchandiseHttpClient
     {
-        Task AskMerch(List<MerchItemResponse> merch, long employeeId, CancellationToken token);
-        Task<List<MerchItemResponse>> InfoAboutMerch(long employeeId, CancellationToken token);
+        Task<bool> RequestMerchAsync(List<MerchItemResponse> merch, long employeeId, CancellationToken token);
+        Task<List<MerchItemResponse>> InfoAboutMerchAsync(long employeeId, CancellationToken token);
     }
 
     public class MerchandiseHttpClient : IMerchandiseHttpClient
@@ -22,17 +22,27 @@ namespace MerchandiseService.HttpClient
             _httpClient = httpClient;
         }
 
-        public async Task AskMerch(List<MerchItemResponse> merch, long employeeId, CancellationToken token)
+        public async Task<bool> RequestMerchAsync(List<MerchItemResponse> merch, long employeeId,
+            CancellationToken token)
         {
-            using (var response = await _httpClient.GetAsync("v1/api/merch", token))
-                return;
+            var response = await _httpClient.GetAsync("v1/api/merch", token);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync(token);
+                return JsonSerializer.Deserialize<bool>(result);
+            }
+            return false;
         }
 
-        public async Task<List<MerchItemResponse>> InfoAboutMerch(long employeeId, CancellationToken token)
+        public async Task<List<MerchItemResponse>> InfoAboutMerchAsync(long employeeId, CancellationToken token)
         {
             using var response = await _httpClient.GetAsync("v1/api/merch", token);
-            var body = await response.Content.ReadAsStringAsync(token);
-            return JsonSerializer.Deserialize<List<MerchItemResponse>>(body);
+            if (response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync(token);
+                return JsonSerializer.Deserialize<List<MerchItemResponse>>(body);
+            }
+            return null;
         }
     }
 }

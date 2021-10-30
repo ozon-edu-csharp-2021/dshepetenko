@@ -5,18 +5,23 @@ package MerchandiseService;
 import "google/protobuf/empty.proto";
 
 service MerchandiseServiceGrpc{
-  rpc AskMerch(AskMerchRequest) returns (google.protobuf.Empty);
+  rpc RequestMerch(RequestMerchRequest) returns (RequestMerchResponse);
   rpc InfoAboutMerch(InfoAboutMerchRequest) returns (InfoAboutMerchResponse);
 }
 
-message AskMerchRequest{
-  repeated AskMerchUnit merch = 1;
+message RequestMerchRequest{
+  repeated RequestMerchUnit merch = 1;
   int64 EmployeeId = 2;
-  message AskMerchUnit{
+  message RequestMerchUnit{
     string Name = 1;
     string Size = 2;
-    int32 amount = 3;
+    int64 sku = 3;
+    int32 quantity = 4;
   }
+}
+
+message RequestMerchResponse{
+  bool isApproved = 1;
 }
 
 message InfoAboutMerchRequest{

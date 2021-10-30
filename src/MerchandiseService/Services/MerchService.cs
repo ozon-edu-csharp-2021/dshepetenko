@@ -8,12 +8,12 @@ namespace MerchandiseService.Services
 {
     public class MerchService : IMerchandiseService
     {
-        public Task AskMerch(List<MerchItem> merch, long employeeId,CancellationToken token)
+        public Task<bool> RequestMerchAsync(List<MerchItem> merch, long employeeId,CancellationToken token)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<List<MerchItem>> InfoAboutMerch(long employeeId, CancellationToken _)
+        public Task<List<MerchItem>> InfoAboutMerchAsync(long employeeId, CancellationToken _)
         {
             throw new System.NotImplementedException();
         }

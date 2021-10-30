@@ -20,20 +20,22 @@ namespace MerchandiseService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AskMerch(List<MerchItem> merch, long employeeId, CancellationToken _)
+        public async Task<ActionResult<bool>> RequestMerchAsync([FromBody] List<MerchItem> merch, long employeeId,
+            CancellationToken _)
         {
-            await _merchandiseService.AskMerch(merch, employeeId, _);
-            return Ok();
+            var isApproved = await _merchandiseService.RequestMerchAsync(merch, employeeId, _);
+            return Ok(isApproved);
         }
 
-        [HttpGet("employeeId:long")]
-        public async Task<ActionResult<List<MerchItem>>> InfoAboutMerch(long employeeId, CancellationToken _)
+        [HttpGet("/info/{employeeId:long}")]
+        public async Task<ActionResult<List<MerchItem>>> InfoAboutMerchAsync(long employeeId, CancellationToken _)
         {
-            var merchInfo =await _merchandiseService.InfoAboutMerch(employeeId, _);
+            var merchInfo = await _merchandiseService.InfoAboutMerchAsync(employeeId, _);
             if (merchInfo is null)
             {
                 return NotFound();
             }
+
             return Ok(merchInfo);
         }
     }

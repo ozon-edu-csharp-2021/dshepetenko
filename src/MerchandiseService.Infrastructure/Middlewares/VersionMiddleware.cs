@@ -12,11 +12,11 @@ namespace MerchandiseService.Infrastructure.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var serviceName = Assembly.GetExecutingAssembly().GetName().Name;
+            var version = Assembly.GetEntryAssembly()?.GetName().Version;
+            var serviceName = Assembly.GetEntryAssembly()?.GetName().Name;
             var versionModel = new
             {
-                Version = version.ToString(),
+                Version = version?.ToString(),
                 ServiceName = serviceName
             };
             await context.Response.WriteAsJsonAsync(versionModel);

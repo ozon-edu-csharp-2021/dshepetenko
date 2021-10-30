@@ -7,8 +7,8 @@ namespace MerchandiseService.Services.Interfaces
 {
     public interface IMerchandiseService
     {
-        Task AskMerch(List<MerchItem> merch, long employeeId,CancellationToken token);
+        Task<bool> RequestMerchAsync(List<MerchItem> merch, long employeeId,CancellationToken token);
         
-        Task<List<MerchItem>> InfoAboutMerch(long employeeId, CancellationToken _);
+        Task<List<MerchItem>> InfoAboutMerchAsync(long employeeId, CancellationToken _);
     }
 }

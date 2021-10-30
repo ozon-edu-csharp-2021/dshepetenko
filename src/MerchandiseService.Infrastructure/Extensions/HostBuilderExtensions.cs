@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using MerchandiseService.Infrastructure.Filters;
 using MerchandiseService.Infrastructure.StartupFilters;
-using MerchandiseService.Infrastructure.Swagger;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,28 +16,20 @@ namespace MerchandiseService.Infrastructure.Extensions
         {
             builder.ConfigureServices(services =>
             {
+                services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 
-                services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
+                
                 services.AddSwaggerGen(options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "OzonEdu.StockApi", Version = "v1"});
+                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "MerchandiseService", Version = "v1"});
                 
                     options.CustomSchemaIds(x => x.FullName);
-
-                    var xmlFileName = Assembly.GetExecutingAssembly().GetName().Name + ".xml";
-                    var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
-                    options.IncludeXmlComments(xmlFilePath);
-
-                    options.OperationFilter<HeaderOperationFilter>();
                 });
+                services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
             });
-            return builder;
-        }
-        public static IHostBuilder AddHttp(this IHostBuilder builder)
-        {
-            builder.ConfigureServices(services =>
-                services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>()));
+            
+            
             return builder;
         }
     }

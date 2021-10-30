@@ -7,12 +7,13 @@ namespace MerchandiseService.Infrastructure.Middlewares
     {
         public LiveMiddleware(RequestDelegate next)
         {
-            
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
             context.Response.StatusCode = 200;
+            var status = new { status = "live" };
+            await context.Response.WriteAsJsonAsync(status);
         }
     }
 }

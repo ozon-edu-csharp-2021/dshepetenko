@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MerchandiseService.GrpcServices;
 using MerchandiseService.Infrastructure.Interceptors;
 using MerchandiseService.Infrastructure.Middlewares;
 using MerchandiseService.Services.Interfaces;
@@ -25,12 +26,18 @@ namespace MerchandiseService
             services.AddSingleton<IMerchandiseService, MerchService>();
 
             services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<MerchandiseGrpcService>();
+                endpoints.MapControllers();
+            });
         }
     }
 }
