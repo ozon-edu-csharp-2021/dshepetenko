@@ -21,7 +21,13 @@ namespace MerchandiseService.GrpcServices
             ServerCallContext context)
         {
             var merch = request.Merch
-                .Select(x => new MerchItem(x.Name, x.Size, x.Sku, x.Quantity))
+                .Select(x => new MerchItem
+                {
+                    Name = x.Name,
+                    Size = x.Size,
+                    Sku = x.Sku,
+                    Quantity = x.Quantity
+                })
                 .ToList();
 
             var isApproved =

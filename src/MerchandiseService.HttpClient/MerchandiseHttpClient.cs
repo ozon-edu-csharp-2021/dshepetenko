@@ -36,7 +36,7 @@ namespace MerchandiseService.HttpClient
 
         public async Task<List<MerchItemResponse>> InfoAboutMerchAsync(long employeeId, CancellationToken token)
         {
-            using var response = await _httpClient.GetAsync("v1/api/merch", token);
+            using var response = await _httpClient.GetAsync($"v1/api/merch/info/{employeeId}", token);
             if (response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync(token);

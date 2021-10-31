@@ -11,7 +11,6 @@ namespace MerchandiseService.Infrastructure.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            context.Response.StatusCode = 200;
             var status = new { status = "ready" };
             await context.Response.WriteAsJsonAsync(status);
         }

@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1B172970-A7AC-405B-BDBE-49B0C0450156}"
+ProjectSection(SolutionItems) = preProject
+	src\Dockerfile = src\Dockerfile
+EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F45DEAFE-AAD7-4F03-8CEC-FF24DFA67D51}"
 EndProject
