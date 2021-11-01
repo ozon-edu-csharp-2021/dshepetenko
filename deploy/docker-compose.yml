@@ -18,5 +18,5 @@ services:
     hostname: supply-service    
   
   merchandice-service:
-    build: ..
+    build: ../src
     hostname: merchandice-service    

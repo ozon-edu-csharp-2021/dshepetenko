@@ -1,14 +1,14 @@
 ﻿FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
-WORKDIR /src
+WORKDIR .
 
-COPY ["src/MerchandiseService/MerchandiseService.csproj","src/MerchandiseService/"] 
+COPY ["MerchandiseService/MerchandiseService.csproj","MerchandiseService/"] 
 
-RUN dotnet restore "src/MerchandiseService/MerchandiseService.csproj"
+RUN dotnet restore "MerchandiseService/MerchandiseService.csproj"
 
-COPY . .
+COPY .. .
 
-WORKDIR "/src/src/MerchandiseService"
+WORKDIR "MerchandiseService"
 
 RUN dotnet build "MerchandiseService.csproj" -c Release -o /app/build
 
