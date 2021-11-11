@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using MerchandiseService.Infrastructure.Filters;
+﻿using MerchandiseService.Infrastructure.Filters;
 using MerchandiseService.Infrastructure.StartupFilters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,18 +15,17 @@ namespace MerchandiseService.Infrastructure.Extensions
             {
                 services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
-                
-                
+
+
                 services.AddSwaggerGen(options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "MerchandiseService", Version = "v1"});
-                
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "MerchandiseService", Version = "v1" });
+
                     options.CustomSchemaIds(x => x.FullName);
                 });
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
             });
-            
-            
+
             return builder;
         }
     }
