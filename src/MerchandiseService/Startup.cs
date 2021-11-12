@@ -25,6 +25,7 @@ namespace MerchandiseService
             services.AddSingleton<IMerchandiseService, MerchService>();
 
             services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+            services.AddInfrastructureServices();
 
             services.AddControllers();
         }

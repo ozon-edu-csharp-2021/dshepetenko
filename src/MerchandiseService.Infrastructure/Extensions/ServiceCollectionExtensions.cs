@@ -1,5 +1,9 @@
 ﻿using System;
 using MediatR;
+using MerchandiseService.Infrastructure.Handlers.GetAvailableQuantityRequestAggregate;
+using MerchandiseService.Infrastructure.Handlers.InfoAboutMerchAggregate;
+using MerchandiseService.Infrastructure.Handlers.MerchandiseIssueRequestAggregate;
+using MerchandiseService.Infrastructure.Handlers.RequestMerchCommandAggregate;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -15,11 +19,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>Объект <see cref="IServiceCollection"/></returns>
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            //services.AddMediatR(typeof().Assembly);
-            
+            services.AddMediatR(typeof(GetAvailableQuantityRequestCommandHandler).Assembly);
+            services.AddMediatR(typeof(MerchandiseIssueRequestCommandHandler).Assembly);
+            services.AddMediatR(typeof(InfoAboutMerchCommandHandler).Assembly);
+            services.AddMediatR(typeof(RequestMerchCommandHandler).Assembly);
+
             return services;
         }
-        
+
         /// <summary>
         /// Добавление в DI контейнер инфраструктурных репозиториев
         /// </summary>
@@ -27,8 +34,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>Объект <see cref="IServiceCollection"/></returns>
         public static IServiceCollection AddInfrastructureRepositories(this IServiceCollection services)
         {
-            
-            
             return services;
         }
     }

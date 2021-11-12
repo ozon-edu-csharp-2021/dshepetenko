@@ -21,5 +21,6 @@ namespace MerchandiseService.Domain.AggregationModels.MerchItemAggregate
         public Quantity Quantity { get; }
         
         public Date DateOfIssue { get; }
+        
     }
 }

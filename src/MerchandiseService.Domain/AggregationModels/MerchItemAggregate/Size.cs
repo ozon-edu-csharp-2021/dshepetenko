@@ -14,5 +14,26 @@ namespace MerchandiseService.Domain.AggregationModels.MerchItemAggregate
         public Size(int id, string name) : base(id, name)
         {
         }
+
+        public static Size CreateSize(string size)
+        {
+            switch (size)
+            {
+                case "XS":
+                    return XS;
+                case "S":
+                    return S;
+                case "M":
+                    return M;
+                case "L":
+                    return L;
+                case "XL":
+                    return XL;
+                case "XXL":
+                    return XXL;
+                default:
+                    return null;
+            }
+        }
     }
 }

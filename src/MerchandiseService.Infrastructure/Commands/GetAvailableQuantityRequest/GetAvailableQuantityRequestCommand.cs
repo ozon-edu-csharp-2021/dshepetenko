@@ -2,7 +2,7 @@
 
 namespace MerchandiseService.Infrastructure.Commands.GetAvailableQuantityRequest
 {
-    public class GetAvailableQuantityRequestCommand : IRequest
+    public class GetAvailableQuantityRequestCommand : IRequest<int>
     {
         public long Sku { get; set; }
     }
