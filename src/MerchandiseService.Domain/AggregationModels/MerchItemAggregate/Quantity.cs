@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MerchandiseService.Domain.Exceptions;
 using MerchandiseService.Domain.Models;
 
 namespace MerchandiseService.Domain.AggregationModels.MerchItemAggregate
@@ -7,6 +8,11 @@ namespace MerchandiseService.Domain.AggregationModels.MerchItemAggregate
     {
         public Quantity(int value)
         {
+            if (value < 0)
+            {
+                throw new NegativeValueException($"{value} is less than zero. Quantity should be greater than zero.");
+            }
+
             Value = value;
         }
 

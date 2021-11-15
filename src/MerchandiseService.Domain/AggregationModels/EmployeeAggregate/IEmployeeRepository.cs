@@ -9,8 +9,6 @@ namespace MerchandiseService.Domain.AggregationModels.EmployeeAggregate
 {
     public interface IEmployeeRepository : IRepository<Employee>
     {
-        Task<Employee> FindByIdAsync(long id, CancellationToken cancellationToken = default);
-
         Task<Employee> FindByEmployeeIdAsync(EmployeeId employeeId, CancellationToken cancellationToken = default);
 
         Task<bool> GiveOutMerchItemAsync(Employee employee, MerchItem merchItem,

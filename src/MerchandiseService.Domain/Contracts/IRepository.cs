@@ -31,5 +31,7 @@ namespace MerchandiseService.Domain.Contracts
         /// <returns>Обновленная сущность сущность</returns>
         Task<TAggregationRoot> UpdateAsync(TAggregationRoot itemToUpdate,
             CancellationToken cancellationToken = default);
+        
+        Task<TAggregationRoot> FindByIdAsync(long id, CancellationToken cancellationToken = default);
     }
 }

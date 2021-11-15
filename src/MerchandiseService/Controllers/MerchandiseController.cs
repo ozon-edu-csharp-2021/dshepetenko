@@ -27,7 +27,7 @@ namespace MerchandiseService.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("/request/{employeeId:long}")]
         public async Task<ActionResult<bool>> RequestMerchAsync([FromBody] List<MerchItem> merch, long employeeId,
             CancellationToken _)
         {
@@ -37,6 +37,7 @@ namespace MerchandiseService.Controllers
                     new Name(x.Name),
                     Size.CreateSize(x.Size),
                     new Sku(x.Sku),
+                    MerchType.GetTypeById(x.MerchType),
                     new Quantity(x.Quantity),
                     null
                 )).ToList(),

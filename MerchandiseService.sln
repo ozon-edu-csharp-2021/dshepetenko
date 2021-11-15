@@ -9,6 +9,7 @@ ProjectSection(SolutionItems) = preProject
 	README.md = README.md
 	.gitignore = .gitignore
 	src\Dockerfile = src\Dockerfile
+	Bounded__Context.drawio = Bounded__Context.drawio
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService", "src\MerchandiseService\MerchandiseService.csproj", "{76182576-986F-4246-AB2E-D2185D0FB618}"

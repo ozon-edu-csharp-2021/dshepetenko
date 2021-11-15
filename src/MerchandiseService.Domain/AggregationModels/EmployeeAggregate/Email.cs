@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using MerchandiseService.Domain.Exceptions;
 using MerchandiseService.Domain.Models;
 
 namespace MerchandiseService.Domain.AggregationModels.EmployeeAggregate
@@ -24,7 +25,7 @@ namespace MerchandiseService.Domain.AggregationModels.EmployeeAggregate
                 return new Email(email);
             }
 
-            throw new Exception($"{email} is invalid!");
+            throw new InvalidEmailException($"{email} is invalid!");
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

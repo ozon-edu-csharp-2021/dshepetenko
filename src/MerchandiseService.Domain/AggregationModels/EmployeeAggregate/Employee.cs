@@ -27,7 +27,7 @@ namespace MerchandiseService.Domain.AggregationModels.EmployeeAggregate
 
         public List<MerchItem> ExpectedMerchItems { get; }
 
-        private void GiveMerchFromExpected(Sku sku)
+        public void GiveMerchFromExpected(Sku sku)
         {
             if (ExpectedMerchItems.Count(x => Equals(x.Sku, sku)) == 0)
             {
@@ -36,8 +36,31 @@ namespace MerchandiseService.Domain.AggregationModels.EmployeeAggregate
 
             var expectedMerch = ExpectedMerchItems.First(x => x.Sku.Equals(sku));
             ExpectedMerchItems.Remove(expectedMerch);
-            expectedMerch.DateOfIssue.SetDate(DateTime.Now);
+            expectedMerch.SetDateOfIssue(DateTime.Now);
             GivenMerchItems.Add(expectedMerch);
+        }
+
+        public bool IsPossibleToIssue(Sku sku)
+        {
+            if (GivenMerchItems.Count(x => Equals(x.Sku, sku)) == 0)
+            {
+                return true;
+            }
+
+            var dateOfIssue = GivenMerchItems.First(x => Equals(x.Sku, sku)).DateOfIssue;
+            if (dateOfIssue != null)
+            {
+                DateTime dateOfIssueOfThisMerch = (DateTime)dateOfIssue;
+
+                if (DateTime.Now.Subtract(dateOfIssueOfThisMerch).Days > 365)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            throw new NoDateException($"Merch Item with Sku = {sku} must have date of issue.");
         }
     }
 }

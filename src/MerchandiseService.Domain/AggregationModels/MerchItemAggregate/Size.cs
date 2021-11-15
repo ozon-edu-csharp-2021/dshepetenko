@@ -1,4 +1,5 @@
-﻿using MerchandiseService.Domain.Models;
+﻿using MerchandiseService.Domain.Exceptions;
+using MerchandiseService.Domain.Models;
 
 namespace MerchandiseService.Domain.AggregationModels.MerchItemAggregate
 {
@@ -11,7 +12,7 @@ namespace MerchandiseService.Domain.AggregationModels.MerchItemAggregate
         public static Size XL = new(5, nameof(XL));
         public static Size XXL = new(6, nameof(XXL));
 
-        public Size(int id, string name) : base(id, name)
+        private Size(int id, string name) : base(id, name)
         {
         }
 
@@ -31,8 +32,10 @@ namespace MerchandiseService.Domain.AggregationModels.MerchItemAggregate
                     return XL;
                 case "XXL":
                     return XXL;
-                default:
+                case "":
                     return null;
+                default:
+                    throw new WrongSizeException($"Size {size} does not exist!");
             }
         }
     }

@@ -17,9 +17,20 @@ namespace MerchandiseService.Infrastructure.Handlers.RequestMerchCommandAggregat
             _employeeRepository = employeeRepository;
         }
 
-        public Task<bool> Handle(RequestMerchCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(RequestMerchCommand request, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            Employee employee = await _employeeRepository.FindByEmployeeIdAsync(
+                new EmployeeId(request.EmployeeId), cancellationToken);
+            List<MerchItem> merch = request.MerchItems;
+            foreach (var merchItem in merch)
+            {
+                if (!employee.IsPossibleToIssue(merchItem.Sku))
+                {
+                    return false;
+                }
+                ///запрос к stock-api для проверки доступного объема мерча
+            }
+            return true;
         }
     }
 }

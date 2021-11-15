@@ -20,9 +20,6 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddMediatR(typeof(GetAvailableQuantityRequestCommandHandler).Assembly);
-            services.AddMediatR(typeof(MerchandiseIssueRequestCommandHandler).Assembly);
-            services.AddMediatR(typeof(InfoAboutMerchCommandHandler).Assembly);
-            services.AddMediatR(typeof(RequestMerchCommandHandler).Assembly);
 
             return services;
         }
