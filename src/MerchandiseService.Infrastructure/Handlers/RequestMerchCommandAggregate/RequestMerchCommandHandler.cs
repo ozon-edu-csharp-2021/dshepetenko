@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -28,9 +29,20 @@ namespace MerchandiseService.Infrastructure.Handlers.RequestMerchCommandAggregat
                 {
                     return false;
                 }
+
                 ///запрос к stock-api для проверки доступного объема мерча
+                if (PseudoGetAvailableQuantity(merchItem.Sku.Value) < merchItem.Quantity.Value)
+                {
+                    return false;
+                }
             }
+
             return true;
+        }
+
+        public int PseudoGetAvailableQuantity(long sku)
+        {
+            throw new NotImplementedException();
         }
     }
 }
