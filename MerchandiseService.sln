@@ -10,6 +10,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	src\Dockerfile = src\Dockerfile
 	Bounded__Context.drawio = Bounded__Context.drawio
+	entrypoint.sh = entrypoint.sh
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService", "src\MerchandiseService\MerchandiseService.csproj", "{76182576-986F-4246-AB2E-D2185D0FB618}"
@@ -31,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService.Domain.Tests", "tests\MerchandiseService.Domain.Tests\MerchandiseService.Domain.Tests.csproj", "{F657E14C-9002-47E3-BE49-F97936378914}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchandiseService.Migrator", "src\MerchandiseService.Migrator\MerchandiseService.Migrator.csproj", "{A4122B0B-CE30-43A8-961F-0A0930216D7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +47,7 @@ Global
 		{0566FBBA-F07B-4EC5-992D-CC500A698870} = {1B172970-A7AC-405B-BDBE-49B0C0450156}
 		{6ACA5373-5834-4AEF-B956-368CC17CFC7D} = {1B172970-A7AC-405B-BDBE-49B0C0450156}
 		{F657E14C-9002-47E3-BE49-F97936378914} = {F45DEAFE-AAD7-4F03-8CEC-FF24DFA67D51}
+		{A4122B0B-CE30-43A8-961F-0A0930216D7E} = {1B172970-A7AC-405B-BDBE-49B0C0450156}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{76182576-986F-4246-AB2E-D2185D0FB618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -74,5 +78,9 @@ Global
 		{F657E14C-9002-47E3-BE49-F97936378914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F657E14C-9002-47E3-BE49-F97936378914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F657E14C-9002-47E3-BE49-F97936378914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4122B0B-CE30-43A8-961F-0A0930216D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4122B0B-CE30-43A8-961F-0A0930216D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4122B0B-CE30-43A8-961F-0A0930216D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4122B0B-CE30-43A8-961F-0A0930216D7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
