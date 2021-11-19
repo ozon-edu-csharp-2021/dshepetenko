@@ -12,6 +12,7 @@ namespace MerchandiseService.Migrator.Migrations
                         id BIGSERIAL PRIMARY KEY,
                         sku_id INT NOT NULL,
                         employee_id BIGINT NOT NULL,
+                        date_of_issue TIMESTAMP,
                         quantity INT NOT NULL,                        
                         is_given BOOLEAN NOT NULL);"
             );

@@ -1,9 +1,6 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
+using MerchandiseService.Infrastructure.Configuration;
 using MerchandiseService.Infrastructure.Handlers.GetAvailableQuantityRequestAggregate;
-using MerchandiseService.Infrastructure.Handlers.InfoAboutMerchAggregate;
-using MerchandiseService.Infrastructure.Handlers.MerchandiseIssueRequestAggregate;
-using MerchandiseService.Infrastructure.Handlers.RequestMerchCommandAggregate;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
