@@ -48,9 +48,102 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
             return itemToCreate;
         }
 
-        public Task<Employee> UpdateAsync(Employee itemToUpdate, CancellationToken cancellationToken = default)
+        public async Task<Employee> UpdateAsync(Employee itemToUpdate, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            string sql = @"
+                            UPDATE employee
+                            SET email = (@Email)                          
+                            WHERE employee.id = (@EmployeeId);
+                            ";
+            var parameters = new
+            {
+                EmployeeId = itemToUpdate.EmployeeId.Value,
+                Email = itemToUpdate.Email.Value
+            };
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            await connection.ExecuteAsync(commandDefinition);
+            foreach (var givenMerchItem in itemToUpdate.GivenMerchItems)
+            {
+                await AddGivenMerch(givenMerchItem, itemToUpdate.EmployeeId, cancellationToken);
+            }
+
+            foreach (var expectedMerchItem in itemToUpdate.ExpectedMerchItems)
+            {
+                await AddExpectedMerch(expectedMerchItem, itemToUpdate.EmployeeId, cancellationToken);
+            }
+
+            _changeTracker.Track(itemToUpdate);
+            return itemToUpdate;
+        }
+
+        public async Task AddGivenMerch(MerchItem merchItem, EmployeeId employeeId, CancellationToken cancellationToken)
+        {
+            string sql = @"
+                            INSERT INTO merch(sku_id, employee_id, date_of_issue, quantity, is_given)
+                            VALUES (@Sku, @EmployeeId, @DateOfIssue, @Quantity, true)
+                            ON CONFLICT (employee_id, sku_id) DO                                                    
+                            UPDATE merch
+                            SET is_given = true                          
+                            WHERE employee_id = (@EmployeeId) AND sku_id = (@Sku);
+                            INSERT INTO skus(id, name, merch_type_id, clothing_size_id)
+                            VALUES (@Sku, @Name, @Type, @Size)
+                            ON CONFLICT (id) DO NOTHING";
+            var parameters = new
+            {
+                Sku = merchItem.Sku.Value,
+                EmployeeId = employeeId.Value,
+                DateOfIssue = merchItem.DateOfIssue,
+                Quantity = merchItem.Quantity.Value,
+                Name = merchItem.Name.Value,
+                Type = merchItem.MerchType.Id,
+                Size = merchItem.Size.Id
+            };
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            await connection.ExecuteAsync(commandDefinition);
+            _changeTracker.Track(merchItem);
+        }
+
+        public async Task AddExpectedMerch(MerchItem merchItem, EmployeeId employeeId,
+            CancellationToken cancellationToken)
+        {
+            string sql = @"
+                            INSERT INTO merch(sku_id, employee_id, date_of_issue, quantity, is_given)
+                            VALUES (@Sku, @EmployeeId, @DateOfIssue, @Quantity, false)
+                            ON CONFLICT (employee_id, sku_id) DO                                                    
+                            UPDATE merch
+                            SET is_given = true                          
+                            WHERE employee_id = (@EmployeeId) AND sku_id = (@Sku);
+                            INSERT INTO skus(id, name, merch_type_id, clothing_size_id)
+                            VALUES (@Sku, @Name, @Type, @Size)
+                            ON CONFLICT (id) DO NOTHING";
+            var parameters = new
+            {
+                Sku = merchItem.Sku.Value,
+                EmployeeId = employeeId.Value,
+                DateOfIssue = merchItem.DateOfIssue,
+                Quantity = merchItem.Quantity.Value,
+                Name = merchItem.Name.Value,
+                Type = merchItem.MerchType.Id,
+                Size = merchItem.Size.Id
+            };
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            await connection.ExecuteAsync(commandDefinition);
+            _changeTracker.Track(merchItem);
         }
 
         public async Task<Employee> FindByEmployeeIdAsync(EmployeeId employeeId,
