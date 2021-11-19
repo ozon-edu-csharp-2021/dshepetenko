@@ -20,8 +20,6 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
 
         private const int Timeout = 5;
 
-        public IUnitOfWork UnitOfWork { get; }
-
         public EmployeeRepository(IDbConnectionFactory<NpgsqlConnection> dbConnectionFactory,
             IChangeTracker changeTracker)
         {

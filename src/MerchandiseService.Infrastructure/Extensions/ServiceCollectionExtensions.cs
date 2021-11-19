@@ -1,6 +1,12 @@
 ﻿using MediatR;
+using MerchandiseService.Domain.AggregationModels.EmployeeAggregate;
+using MerchandiseService.Domain.Contracts;
 using MerchandiseService.Infrastructure.Configuration;
 using MerchandiseService.Infrastructure.Handlers.GetAvailableQuantityRequestAggregate;
+using MerchandiseService.Infrastructure.Repositories.Implementation;
+using MerchandiseService.Infrastructure.Repositories.Infrastructure;
+using MerchandiseService.Infrastructure.Repositories.Infrastructure.Interfaces;
+using Npgsql;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -17,7 +23,12 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddMediatR(typeof(GetAvailableQuantityRequestCommandHandler).Assembly);
+            services.AddScoped<IDbConnectionFactory<NpgsqlConnection>, NpgsqlConnectionFactory>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IChangeTracker, ChangeTracker>();
 
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             return services;
         }
 
