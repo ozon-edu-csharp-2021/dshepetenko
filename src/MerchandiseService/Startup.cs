@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MerchandiseService.GrpcServices;
-using MerchandiseService.Infrastructure.Interceptors;
-using MerchandiseService.Infrastructure.Middlewares;
 using MerchandiseService.Services.Interfaces;
 using MerchandiseService.Services;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MerchandiseService.Infrastructure.Interceptors;
 
 
 namespace MerchandiseService
@@ -26,6 +25,7 @@ namespace MerchandiseService
             services.AddSingleton<IMerchandiseService, MerchService>();
 
             services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+            services.AddInfrastructureServices();
 
             services.AddControllers();
         }

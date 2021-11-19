@@ -2,9 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
+using MediatR;
+using MerchandiseService.Domain.AggregationModels.MerchItemAggregate;
+using MerchandiseService.Domain.AggregationModels.ValueObjects;
 using MerchandiseService.Grpc;
-using MerchandiseService.Models;
+using MerchandiseService.Infrastructure.Commands.InfoAboutMerch;
+using MerchandiseService.Infrastructure.Commands.RequestMerch;
 using MerchandiseService.Services.Interfaces;
+using MerchItem = MerchandiseService.Models.MerchItem;
 
 namespace MerchandiseService.GrpcServices
 {
@@ -12,48 +17,57 @@ namespace MerchandiseService.GrpcServices
     {
         private readonly IMerchandiseService _merchandiseService;
 
-        public MerchandiseGrpcService(IMerchandiseService merchandiseService)
+        private readonly IMediator _mediator;
+
+        public MerchandiseGrpcService(IMerchandiseService merchandiseService, IMediator mediator)
         {
             _merchandiseService = merchandiseService;
+            _mediator = mediator;
         }
 
         public override async Task<RequestMerchResponse> RequestMerch(RequestMerchRequest request,
             ServerCallContext context)
         {
-            var merch = request.Merch
-                .Select(x => new MerchItem
-                {
-                    Name = x.Name,
-                    Size = x.Size,
-                    Sku = x.Sku,
-                    Quantity = x.Quantity
-                })
-                .ToList();
+            var merch = new RequestMerchCommand()
+            {
+                EmployeeId = request.EmployeeId,
+                MerchItems = request.Merch.Select(x => new Domain.AggregationModels.MerchItemAggregate.MerchItem(
+                    new Name(x.Name),
+                    Size.CreateSize(x.Size),
+                    new Sku(x.Sku),
+                    MerchType.GetTypeById(x.MerchType),
+                    new Quantity(x.Quantity),
+                    null)).ToList()
+            };
 
-            var isApproved =
-                await _merchandiseService.RequestMerchAsync(merch, request.EmployeeId, context.CancellationToken);
+            var result = await _mediator.Send(merch, context.CancellationToken); 
+
             return new RequestMerchResponse()
             {
-                IsApproved = isApproved
+                IsApproved = result
             };
         }
 
         public override async Task<InfoAboutMerchResponse> InfoAboutMerch(InfoAboutMerchRequest request,
             ServerCallContext context)
         {
-            var merchInfo =
-                await _merchandiseService.InfoAboutMerchAsync(request.EmployeeId, context.CancellationToken);
+
+            var result = await _mediator.Send(new InfoAboutMerchCommand()
+            {
+                EmployeeId = request.EmployeeId
+            }, context.CancellationToken);
             return new InfoAboutMerchResponse()
             {
                 Items =
                 {
-                    merchInfo.Select(x => new InfoAboutMerchResponse.Types.InfoAboutMerchUnit()
+                    result.Select(x => new InfoAboutMerchResponse.Types.InfoAboutMerchUnit()
                     {
-                        Name = x.Name,
-                        Quantity = x.Quantity,
-                        Size = x.Size,
-                        Sku = x.Sku
-                    })
+                        Name = x.Name.Value,
+                        Quantity = x.Quantity.Value,
+                        Size = x.Size.Name,
+                        Sku = x.Sku.Value,
+                        MerchType = x.MerchType.Id
+                    }).ToList()
                 }
             };
         }

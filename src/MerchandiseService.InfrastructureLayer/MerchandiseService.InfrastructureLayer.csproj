@@ -2,23 +2,17 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>MerchandiseService.InfrastructureLayer</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\MerchandiseService.Domain\MerchandiseService.Domain.csproj" />
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
         <PackageReference Include="Grpc.Core" Version="2.41.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-        <PackageReference Include="MediatR" Version="9.0.0" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     </ItemGroup>
-    
+
     <ItemGroup>
-      <Folder Include="Queries" />
-      <Folder Include="Swagger" />
+      <Folder Include="Extensions" />
     </ItemGroup>
 
 </Project>
