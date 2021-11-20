@@ -9,6 +9,7 @@ using MerchandiseService.Domain.Contracts;
 using MerchandiseService.Infrastructure.Repositories.Infrastructure.Interfaces;
 using Npgsql;
 using Dapper;
+using MerchandiseService.Infrastructure.Repositories.Infrastructure;
 
 namespace MerchandiseService.Infrastructure.Repositories.Implementation
 {
@@ -29,8 +30,8 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
 
         public async Task<Employee> CreateAsync(Employee itemToCreate, CancellationToken cancellationToken = default)
         {
-            string sql = @"
-                            INSERT INTO employees (id, email)
+            string sql = @$"
+                            INSERT INTO {Tables.EmployeeTable} (id, email)
                             VALUES (@EmployeeId, @Email);";
             var parameters = new
             {
@@ -50,10 +51,10 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
 
         public async Task<Employee> UpdateAsync(Employee itemToUpdate, CancellationToken cancellationToken = default)
         {
-            string sql = @"
-                            UPDATE employee
+            string sql = @$"
+                            UPDATE {Tables.EmployeeTable}
                             SET email = (@Email)                          
-                            WHERE employee.id = (@EmployeeId);
+                            WHERE {Tables.EmployeeTable}.id = (@EmployeeId);
                             ";
             var parameters = new
             {
@@ -83,14 +84,14 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
 
         public async Task AddGivenMerch(MerchItem merchItem, EmployeeId employeeId, CancellationToken cancellationToken)
         {
-            string sql = @"
-                            INSERT INTO merch(sku_id, employee_id, date_of_issue, quantity, is_given)
+            string sql = @$"
+                            INSERT INTO {Tables.MerchTable}(sku_id, employee_id, date_of_issue, quantity, is_given)
                             VALUES (@Sku, @EmployeeId, @DateOfIssue, @Quantity, true)
                             ON CONFLICT (employee_id, sku_id) DO                                                    
-                            UPDATE merch
+                            UPDATE  {Tables.MerchTable}
                             SET is_given = true                          
                             WHERE employee_id = (@EmployeeId) AND sku_id = (@Sku);
-                            INSERT INTO skus(id, name, merch_type_id, clothing_size_id)
+                            INSERT INTO {Tables.SkuTable}(id, name, merch_type_id, clothing_size_id)
                             VALUES (@Sku, @Name, @Type, @Size)
                             ON CONFLICT (id) DO NOTHING";
             var parameters = new
@@ -116,14 +117,14 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
         public async Task AddExpectedMerch(MerchItem merchItem, EmployeeId employeeId,
             CancellationToken cancellationToken)
         {
-            string sql = @"
-                            INSERT INTO merch(sku_id, employee_id, date_of_issue, quantity, is_given)
+            string sql = @$"
+                            INSERT INTO {Tables.MerchTable}(sku_id, employee_id, date_of_issue, quantity, is_given)
                             VALUES (@Sku, @EmployeeId, @DateOfIssue, @Quantity, false)
                             ON CONFLICT (employee_id, sku_id) DO                                                    
-                            UPDATE merch
+                            UPDATE {Tables.MerchTable}
                             SET is_given = true                          
                             WHERE employee_id = (@EmployeeId) AND sku_id = (@Sku);
-                            INSERT INTO skus(id, name, merch_type_id, clothing_size_id)
+                            INSERT INTO {Tables.SkuTable}(id, name, merch_type_id, clothing_size_id)
                             VALUES (@Sku, @Name, @Type, @Size)
                             ON CONFLICT (id) DO NOTHING";
             var parameters = new
@@ -151,10 +152,10 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
         {
             var givenMerch = await GetAllGivenMerchItemsOfEmployeeById(employeeId, cancellationToken);
             var expectedMerch = await GetAllExprectedMerchItemsOfEmployeeById(employeeId, cancellationToken);
-            string sql = @"
-                            SELECT employees.id, employees.email
-                            FROM employees
-                            WHERE employees.id = (@EmployeeId)
+            string sql = @$"
+                            SELECT id, email
+                            FROM {Tables.EmployeeTable}
+                            WHERE id = (@EmployeeId)
                             ";
             var parameters = new
             {
@@ -181,10 +182,10 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
         public async Task<bool> GiveOutMerchItemAsync(Employee employee, MerchItem merchItem,
             CancellationToken cancellationToken = default)
         {
-            string sql = @"
-                            UPDATE merch
+            string sql = @$"
+                            UPDATE {Tables.MerchTable}
                             SET is_given = true                          
-                            WHERE merch.employee_id = (@EmployeeId) AND merch.sku_id = (@Sku);
+                            WHERE employee_id = (@EmployeeId) AND sku_id = (@Sku);
                             ";
             var parameters = new
             {
@@ -206,10 +207,10 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
         public async Task<bool> CheckIfMerchItemIsGivenBySkuAsync(Employee employee, Sku sku,
             CancellationToken cancellationToken = default)
         {
-            string sql = @"
-                            SELECT merch.is_given
-                            FROM merch                            
-                            WHERE merch.employee_id = (@EmployeeId) AND merch.sku_id = (@Sku);
+            string sql = @$"
+                            SELECT is_given
+                            FROM {Tables.MerchTable}                            
+                            WHERE employee_id = (@EmployeeId) AND sku_id = (@Sku);
                             ";
             var parameters = new
             {
@@ -230,12 +231,12 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
         public async Task<List<MerchItem>> GetAllGivenMerchItemsOfEmployeeById(EmployeeId employeeId,
             CancellationToken cancellationToken = default)
         {
-            string sql = @"
-                            SELECT skus.name, skus.clothing_size_id, skus.id, skus.merch_type_id,
-                                    merch.quantity, merch.date_of_issue
-                            FROM skus
-                            INNER JOIN merch on merch.sku_id = skus.id
-                            WHERE merch.employee_id = (@EmployeeId) AND merch.is_given = true;
+            string sql = @$"
+                            SELECT {Tables.SkuTable}.name, {Tables.SkuTable}.clothing_size_id, {Tables.SkuTable}.id, {Tables.SkuTable}.merch_type_id,
+                                    {Tables.MerchTable}.quantity, {Tables.MerchTable}.date_of_issue
+                            FROM {Tables.SkuTable}
+                            INNER JOIN {Tables.MerchTable} on {Tables.MerchTable}.sku_id = {Tables.SkuTable}.id
+                            WHERE {Tables.MerchTable}.employee_id = (@EmployeeId) AND {Tables.MerchTable}.is_given = true;
                             ";
             var parameters = new
             {
@@ -269,12 +270,12 @@ namespace MerchandiseService.Infrastructure.Repositories.Implementation
         public async Task<List<MerchItem>> GetAllExprectedMerchItemsOfEmployeeById(EmployeeId employeeId,
             CancellationToken cancellationToken = default)
         {
-            string sql = @"
-                            SELECT skus.name, skus.clothing_size_id, skus.id, skus.merch_type_id,
-                                    merch.quantity, merch.date_of_issue
-                            FROM skus
-                            INNER JOIN merch on merch.sku_id = skus.id
-                            WHERE merch.employee_id = (@EmployeeId) AND merch.is_given = false;
+            string sql = @$"
+                            SELECT {Tables.SkuTable}.name, {Tables.SkuTable}.clothing_size_id, {Tables.SkuTable}.id, {Tables.SkuTable}.merch_type_id,
+                                    {Tables.MerchTable}.quantity, {Tables.MerchTable}.date_of_issue
+                            FROM {Tables.SkuTable}
+                            INNER JOIN {Tables.MerchTable} on {Tables.MerchTable}.sku_id = {Tables.SkuTable}.id
+                            WHERE {Tables.MerchTable}.employee_id = (@EmployeeId) AND {Tables.MerchTable}.is_given = false;
                             ";
             var parameters = new
             {

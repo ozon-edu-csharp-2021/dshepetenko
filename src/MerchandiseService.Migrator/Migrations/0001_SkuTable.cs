@@ -7,8 +7,8 @@ namespace MerchandiseService.Migrator.Migrations
     {
         public override void Up()
         {
-            Execute.Sql(@"
-                        CREATE TABLE IF NOT EXISTS skus(
+            Execute.Sql(@$"
+                        CREATE TABLE IF NOT EXISTS {Tables.SkuTable}(
                         id BIGSERIAL PRIMARY KEY,
                         name TEXT NOT NULL,
                         merch_type_id INT NOT NULL,
@@ -18,7 +18,7 @@ namespace MerchandiseService.Migrator.Migrations
 
         public override void Down()
         {
-            Execute.Sql("DROP TABLE if exists skus;");
+            Execute.Sql($"DROP TABLE if exists {Tables.SkuTable};");
         }
     }
 }

@@ -7,8 +7,8 @@ namespace MerchandiseService.Migrator.Migrations
     {
         public override void Up()
         {
-            Execute.Sql(@"
-                        INSERT INTO clothing_sizes (id, name)
+            Execute.Sql(@$"
+                        INSERT INTO {Tables.ClothingSizeTable} (id, name)
                         VALUES 
                             (1, 'XS'),
                             (2, 'S'),
@@ -19,8 +19,8 @@ namespace MerchandiseService.Migrator.Migrations
                         ON CONFLICT DO NOTHING
                         ");
             
-            Execute.Sql(@"
-                        INSERT INTO merch_types (id, name)
+            Execute.Sql(@$"
+                        INSERT INTO {Tables.MerchTypeTable} (id, name)
                         VALUES 
                             (1, 'TShirt'),
                             (2, 'Sweatshirt'),

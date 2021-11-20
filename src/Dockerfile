@@ -16,7 +16,7 @@ FROM build AS publish
 
 RUN dotnet publish "MerchandiseService.csproj" -c Release -o /app/publish
 
-COPY "../entrypoint.sh" "/app/publish/."
+COPY ../entrypoint.sh "/app/publish/."
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
 

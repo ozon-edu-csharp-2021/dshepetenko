@@ -7,8 +7,8 @@ namespace MerchandiseService.Migrator.Migrations
     {
         public override void Up()
         {
-            Execute.Sql(@"
-                        CREATE TABLE IF NOT EXISTS employees(
+            Execute.Sql(@$"
+                        CREATE TABLE IF NOT EXISTS {Tables.EmployeeTable}(
                         id BIGSERIAL PRIMARY KEY,
                         email TEXT NOT NULL);"
             );
@@ -16,7 +16,7 @@ namespace MerchandiseService.Migrator.Migrations
 
         public override void Down()
         {
-            Execute.Sql("DROP TABLE if exists employees;");
+            Execute.Sql($"DROP TABLE if exists {Tables.EmployeeTable};");
         }
     }
 }
