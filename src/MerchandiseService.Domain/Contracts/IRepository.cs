@@ -10,11 +10,6 @@ namespace MerchandiseService.Domain.Contracts
     public interface IRepository<TAggregationRoot>
     {
         /// <summary>
-        /// Объект <see cref="IUnitOfWork"/>
-        /// </summary>
-        IUnitOfWork UnitOfWork { get; }
-
-        /// <summary>
         /// Создать новую сущность
         /// </summary>
         /// <param name="itemToCreate">Объект для создания</param>
@@ -31,7 +26,5 @@ namespace MerchandiseService.Domain.Contracts
         /// <returns>Обновленная сущность сущность</returns>
         Task<TAggregationRoot> UpdateAsync(TAggregationRoot itemToUpdate,
             CancellationToken cancellationToken = default);
-        
-        Task<TAggregationRoot> FindByIdAsync(long id, CancellationToken cancellationToken = default);
     }
 }
